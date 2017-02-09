@@ -16,13 +16,17 @@ class TrieNode:
     def __init__(self, ch):
         self.data = ch
 
-        # Static array of 26 None values, might be less space than a dict
-        # in the end. The index corresponds to ord('ch') - 97
-        self.children = [None] * 26
+        # This is not optimal time-wise, but will save space
+        self.children = []
 
         # Number of of times this Node has been visited in the add function.
         # Thus, how many words used this Node.
         self.used = 0
+
+    def get_child(self, ch):
+        for child in self.children:
+            if child.data == ch:
+                return child
 
 
 class WordTrie:
@@ -34,12 +38,11 @@ class WordTrie:
         current = self.root
 
         for ch in string:
-            code = ord(ch) - 97
-            child = current.children[code]
+            child = current.get_child(ch)
 
             if child is None:
                 child = TrieNode(ch)
-                current.children[code] = child
+                current.children.append(child)
 
             # Either way, this node was used in another word
             child.used += 1
@@ -49,8 +52,7 @@ class WordTrie:
         current = self.root
 
         for ch in query:
-            code = ord(ch) - 97
-            child = current.children[code]
+            child = current.get_child(ch)
 
             if child is None:
                 return 0
