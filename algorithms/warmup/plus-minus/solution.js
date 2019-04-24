@@ -26,24 +26,42 @@ function readLine () {
   return input[inputIndex++]
 }
 
-function miniMaxSum (arr) {
-  const sorted = arr.sort()
+function plusMinus (arr) {
+  let zero = 0
+  let positive = 0
+  let negative = 0
+
+  for (const n of arr) {
+    if (n > 0) {
+      positive += 1
+    } else if (n < 0) {
+      negative += 1
+    } else {
+      zero += 1
+    }
+  }
 
   return {
-    min: sorted.slice(0, 4).reduce((sum, value) => sum + value),
-    max: sorted.slice(-4).reduce((sum, value) => sum + value)
+    zero: (zero / arr.length),
+    positive: (positive / arr.length),
+    negative: (negative / arr.length)
   }
 }
 
 function main () {
-  // Parse the input array (always length 5).
+  readLine() // We don't need to care about the size of the array.
+
+  // Parse the input array.
   const values = readLine().split(' ').map(v => Number.parseInt(v, 10))
-  const result = miniMaxSum(values)
+  const result = plusMinus(values)
 
   // Open the output stream and write the result.
   const ws = createWriteStream(process.env.OUTPUT_PATH)
 
-  // Write results in correct order.
-  ws.write(`${result.min} ${result.max}`)
+  // Write results in correct order and match 6 decimal places.
+  ws.write(`${result.positive.toFixed(6)}\n`)
+  ws.write(`${result.negative.toFixed(6)}\n`)
+  ws.write(`${result.zero.toFixed(6)}\n`)
+
   ws.end()
 }
