@@ -26,7 +26,6 @@ function readLine () {
   return input[inputIndex++]
 }
 
-// Return the sum of the array.
 function diagnonalDifference (matrix) {
   let primary = 0
   let secondary = 0
