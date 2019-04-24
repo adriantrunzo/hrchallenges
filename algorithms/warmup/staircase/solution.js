@@ -26,24 +26,21 @@ function readLine () {
   return input[inputIndex++]
 }
 
-function miniMaxSum (arr) {
-  const sorted = arr.sort()
-
-  return {
-    min: sorted.slice(0, 4).reduce((sum, value) => sum + value),
-    max: sorted.slice(-4).reduce((sum, value) => sum + value)
+// Prints a staircase to the given stream.
+function staircase (size, ws) {
+  for (let i = 0; i < size; i++) {
+    const step = '#'.repeat(i + 1).padStart(size)
+    ws.write(`${step}\n`)
   }
 }
 
 function main () {
-  // Parse the input array (always length 5).
-  const values = readLine().split(' ').map(v => Number.parseInt(v, 10))
-  const result = miniMaxSum(values)
+  // Parse the size of the staircase.
+  const size = Number.parseInt(readLine(), 10)
 
-  // Open the output stream and write the result.
+  // Open the output stream.
   const ws = createWriteStream(process.env.OUTPUT_PATH)
 
-  // Write results in correct order.
-  ws.write(`${result.min} ${result.max}`)
+  staircase(size, ws)
   ws.end()
 }
